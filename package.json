@@ -1,6 +1,6 @@
 {
   "name": "ac-excel-reader",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -88,5 +88,7 @@
     "react-dom": "^15.3.0 || ^16.0.0",
     "prop-types": "^15.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "xlsx": "^0.14.3"
+  }
 }
