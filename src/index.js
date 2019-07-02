@@ -1,9 +1,30 @@
-/* eslint-disable no-restricted-syntax,no-prototype-builtins,react/prop-types,react/destructuring-assignment,no-shadow */
+/* eslint-disable no-restricted-syntax,no-prototype-builtins,react/prop-types,react/destructuring-assignment,no-shadow,react/no-unused-prop-types,react/forbid-prop-types */
 import React, { Component } from 'react';
 
 import XLSX from 'xlsx';
+import PropTypes from 'prop-types';
+
 import './index.less';
 
+
+function empty() {
+
+}
+
+
+const propTypes = {
+  colKeyHash: PropTypes.object, // 列名 hash 转换
+  getJson: PropTypes.func, // 解析成json
+  getArray: PropTypes.func, // 解析成数组
+  accept: PropTypes.string, // 解析文件类型
+};
+
+const defaultProps = {
+  colKeyHash: {},
+  getJson: empty,
+  getArray: empty,
+  accept: '.xlsx, .xls, .csv',
+};
 
 class AcExcelReader extends Component {
   constructor(props) {
@@ -21,7 +42,6 @@ class AcExcelReader extends Component {
     fileReader.readAsBinaryString(files[0]);
 
     fileReader.onload = (event) => {
-
       try {
         const { result } = event.target;
         // 以二进制流方式读取得到整份excel表格对象
@@ -40,7 +60,7 @@ class AcExcelReader extends Component {
         const { colKeyHash } = this.props;
 
         // json 可以转换
-        if (colKeyHash) {
+        if (colKeyHash && Object.keys(colKeyHash).length > 0) {
           jsonData = data.map((row) => {
             const result = {};
             for (const item in row) {
@@ -86,18 +106,21 @@ class AcExcelReader extends Component {
 
 
   render() {
+    const { children, accept } = this.props;
     return (
       <span onClick={this.onClickUpload}>
         <input
           type="file"
-          accept=".xlsx, .xls"
+          accept={accept}
           style={{ display: 'none' }}
           onChange={this.onImportExcel}
         />
-        <span>{this.props.children}</span>
+        <span>{children}</span>
       </span>
     );
   }
 }
 
+AcExcelReader.propTypes = propTypes;
+AcExcelReader.defaultProps = defaultProps;
 export default AcExcelReader;

@@ -6,7 +6,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Icon } from 'tinper-bee';
+import { Button } from 'tinper-bee';
 // 项目中引入方式
 // import AcExcelReader from 'ac-excel-reader';
 // demo 中引入方式
