@@ -1,7 +1,7 @@
 /**
  *
- * @title 应用组件名称
- * @description 应用组件描述
+ * @title AcExcelReader
+ * @description 前端Excel解析，无需上传到后端，减少网络传输，
  *
  */
 
