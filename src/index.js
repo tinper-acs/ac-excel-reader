@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax,no-prototype-builtins,react/prop-types,react/destructuring-assignment,no-shadow,react/no-unused-prop-types,react/forbid-prop-types */
 import React, { Component } from 'react';
 
-import XLSX from 'xlsx';
+import XLSX from 'xlsx/dist/xlsx.full.min';
 import PropTypes from 'prop-types';
 
 import './index.less';
