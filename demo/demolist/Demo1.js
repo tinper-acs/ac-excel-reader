@@ -37,7 +37,8 @@ class Demo1 extends Component {
             console.log(data);
           }}
 
-          colKeyHash={colKeyHash}
+          colKeyHash={colKeyHash} // 列名hash 对照
+          dateFormat='yyyy-MM-dd' // 日期格式化
 
         >
           <Button shape="border">上传excel</Button>

@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax,no-prototype-builtins,react/prop-types,react/destructuring-assignment,no-shadow,react/no-unused-prop-types,react/forbid-prop-types */
+/* eslint-disable no-restricted-syntax,no-prototype-builtins,react/prop-types,react/destructuring-assignment,no-shadow,react/no-unused-prop-types,react/forbid-prop-types,no-param-reassign */
 import React, { Component } from 'react';
 
 import XLSX from 'xlsx/dist/xlsx.full.min';
@@ -17,6 +17,7 @@ const propTypes = {
   getJson: PropTypes.func, // 解析成json
   getArray: PropTypes.func, // 解析成数组
   accept: PropTypes.string, // 解析文件类型
+  dateFormat: PropTypes.string, // 日期格式化
 };
 
 const defaultProps = {
@@ -24,6 +25,7 @@ const defaultProps = {
   getJson: empty,
   getArray: empty,
   accept: '.xlsx, .xls, .csv',
+  dateFormat: 'yyyy-MM-dd',
 };
 
 class AcExcelReader extends Component {
@@ -34,6 +36,8 @@ class AcExcelReader extends Component {
 
 
   onImportExcel = (file) => {
+    const { dateFormat } = this.props;
+
     // 获取上传的文件对象
     const { files } = file.target;
     // 通过FileReader对象读取文件
@@ -45,7 +49,11 @@ class AcExcelReader extends Component {
       try {
         const { result } = event.target;
         // 以二进制流方式读取得到整份excel表格对象
-        const workbook = XLSX.read(result, { type: 'binary' });
+        const workbook = XLSX.read(result,
+          {
+            type: 'binary',
+            cellDates: true, // 将日期类型
+          });
         let data = []; // 存储获取到的数据
         // 遍历每张工作表进行读取（这里默认只读取第一张表）
         for (const sheet in workbook.Sheets) {
@@ -72,7 +80,12 @@ class AcExcelReader extends Component {
                   break;
                 }
               }
-              result[key] = row[item];
+
+              let cellValue = row[item];
+              if (Object.prototype.toString.call(row[item]) === '[object Date]') {
+                cellValue = this.formatDate(row[item], dateFormat);
+              }
+              result[key] = cellValue;
             }
             return result;
           });
@@ -82,7 +95,12 @@ class AcExcelReader extends Component {
         const array = data.map((row) => {
           const result = [];
           for (const item in row) {
-            result.push(row[item]);
+            let cellValue = row[item];
+            if (Object.prototype.toString.call(row[item]) === '[object Date]') {
+              cellValue = this.formatDate(row[item], dateFormat);
+            }
+
+            result.push(cellValue);
           }
           return result;
         });
@@ -93,7 +111,7 @@ class AcExcelReader extends Component {
         this.props.getArray(array);
       } catch (e) {
         // 这里可以抛出文件类型错误不正确的相关提示
-        console.log('文件类型不正确');
+        console.log('文件类型不正确', e);
       }
     };
   };
@@ -103,6 +121,31 @@ class AcExcelReader extends Component {
     const input = event.currentTarget.children[0];
     input.click();
   };
+
+
+  formatDate = (date, fmt) => {
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (`${date.getFullYear()}`).substr(4 - RegExp.$1.length));
+    }
+    const o = {
+      'M+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'm+': date.getMinutes(),
+      's+': date.getSeconds(),
+    };
+
+    // 遍历这个对象
+    for (const k in o) {
+      if (new RegExp(`(${k})`).test(fmt)) {
+        const str = `${o[k]}`;
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str));
+      }
+    }
+    return fmt;
+  };
+
+  padLeftZero = str => (`00${str}`).substr(str.length);
 
 
   render() {

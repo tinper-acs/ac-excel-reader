@@ -17,6 +17,7 @@ accept    | string               | .xlsx,.xls,.csv| 支持解析文件类型
 colKeyHash| object               | {}           | 列名 hash 转换
 getJson   | func                 | -            | 将文件解析成json
 getArray  | func                 | -            | 将文件解析成数组
+dateFormat| string               | yyyy-MM-dd   | 日期类型格式化
 
 
 ## 注意事项
