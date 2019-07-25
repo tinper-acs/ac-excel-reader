@@ -1,6 +1,6 @@
 {
   "name": "ac-excel-reader",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "前端解析excel",
   "main": "dist/index.js",
   "scripts": {

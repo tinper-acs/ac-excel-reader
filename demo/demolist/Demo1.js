@@ -40,6 +40,10 @@ class Demo1 extends Component {
           colKeyHash={colKeyHash} // 列名hash 对照
           dateFormat='yyyy-MM-dd' // 日期格式化
 
+          onAllowUpload={() => { //
+            return false;
+          }}
+
         >
           <Button shape="border">上传excel</Button>
         </AcExcelReader>

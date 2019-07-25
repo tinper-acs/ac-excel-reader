@@ -118,8 +118,17 @@ class AcExcelReader extends Component {
 
 
   onClickUpload = (event) => {
-    const input = event.currentTarget.children[0];
-    input.click();
+    const { onAllowUpload } = this.props;
+    if (onAllowUpload) { // 如果有验证方法
+      if (onAllowUpload()) {
+        const input = event.currentTarget.children[0];
+        input.click();
+      }
+    } else {
+      const input = event.currentTarget.children[0];
+      input.click();
+    }
+
   };
 
 

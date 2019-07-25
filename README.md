@@ -18,6 +18,7 @@ colKeyHash| object               | {}           | 列名 hash 转换
 getJson   | func                 | -            | 将文件解析成json
 getArray  | func                 | -            | 将文件解析成数组
 dateFormat| string               | yyyy-MM-dd   | 日期类型格式化
+onAllowUpload| func              | -            | 上传前验证 return true(允许上传)或者false(不允许上传)
 
 
 ## 注意事项
