@@ -40,8 +40,9 @@ class Demo1 extends Component {
           colKeyHash={colKeyHash} // 列名hash 对照
           dateFormat='yyyy-MM-dd' // 日期格式化
 
-          onAllowUpload={() => { //
-            return false;
+          onAllowUpload={() => { // 是否允许上传
+            // 其他业务
+            return "xxx"; // false(禁止) true(允许)
           }}
 
         >

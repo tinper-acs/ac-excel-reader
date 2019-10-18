@@ -114,6 +114,9 @@ class AcExcelReader extends Component {
         console.log('文件类型不正确', e);
       }
     };
+
+    file.target.value=null;
+
   };
 
 
@@ -163,6 +166,7 @@ class AcExcelReader extends Component {
       <span onClick={this.onClickUpload}>
         <input
           type="file"
+          id="ac-upload-excel"
           accept={accept}
           style={{ display: 'none' }}
           onChange={this.onImportExcel}
